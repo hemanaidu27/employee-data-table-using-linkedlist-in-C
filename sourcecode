@@ -67,7 +67,7 @@ struct employee*  deleteNode(struct employee  *HeadofList, int id)
 
     if (HeadofList->id == id)
     {
-
+    
        ptr = HeadofList;
         printf("\n Node deleted:");
         printNode(HeadofList);
@@ -112,7 +112,6 @@ void search(struct employee *HeadofList, int key)
     }
     printf("\n Employee Number %d not found ", key);
 }
-
 void display(struct employee  *HeadofList)
 
 {
@@ -126,12 +125,9 @@ void display(struct employee  *HeadofList)
         printNode(ptr);
 }
 
-
 int  option()
 {
     int choice;
-
-
     printf("\n");
     printf("    Press 1 to INSERT a node into the list     \n");
     printf("    Press 2 to DELETE a node from the list     \n");
@@ -140,9 +136,7 @@ int  option()
                                                                                                                             133,4         64%   printf("\n Enter your choice: ");
     scanf("%d", &choice);
     printf("\n");
-
-
-
+    
     return choice;
 }
 
@@ -172,6 +166,7 @@ void main()
             employeeList = deleteNode(employeeList, id);
             break;
         case 3:
+        
            display(employeeList);
             break;
         case 4:
@@ -185,7 +180,6 @@ void main()
         default :
 
             printf("\n Invalid choice.");
-
         }
 
     } while (choice != 5);
