@@ -1,0 +1,194 @@
+#include <stdio.h>
+#include <curses.h>
+#include <stdlib.h>
+#include <string.h>
+#define MAX 60
+
+struct employee
+{
+    int  id;
+    char name[51];
+    char designation[51];
+    char expertise[51];
+    char joiningdate[51];
+    struct employee *next;
+
+};
+
+struct employee *insert(struct employee *HeadofList , int id, char name[],
+                        char designation[], char expertise[], char joiningdate[])
+{
+            printf("\n--> Enter the employee number :");
+            scanf("%d", &id);
+            printf("\n--> Enter the Employee name :");
+            scanf("%s",name);
+            printf("\n--> Enter the Employee Designation :");
+            scanf("%s",designation);
+            printf("\n--> Enter the Employee expertise :");
+            scanf("%s",expertise);
+            printf("\n--> Enter the employee joining date  :");
+            scanf("%s",joiningdate);
+
+            struct employee *newnode;
+            newnode = (struct employee*)malloc(sizeof(struct employee));
+
+
+            if (newnode == NULL)
+                printf("\n Allocation not possible \n");
+               newnode->id = id;
+    strcpy(newnode->name, name);
+    strcpy(newnode->designation, designation);
+    strcpy(newnode->expertise,expertise);
+    strcpy(newnode->joiningdate, joiningdate);
+    newnode->next = HeadofList;
+    HeadofList = newnode;
+    return(HeadofList);
+}
+
+void printNode(struct employee  *p)
+{
+    printf("\n.........Employee Details......  \n");
+    printf("\n Emp No -->       : %d\n", p->id);
+    printf("\n Name -->           : %s\n", p->name);
+    printf("\n Designation -->    : %s\n", p->designation);
+    printf("\n Expertise -->    : %s\n", p->expertise);
+    printf("\n joiningdate -->     : %s\n", p->joiningdate);
+    printf("\n..............................\n");
+}
+
+struct employee*  deleteNode(struct employee  *HeadofList, int id)
+{
+
+    printf("\n\n Enter the employee number to be deleted: ");
+    scanf("%d", &id);
+
+    struct employee *ptr;
+    struct employee *bptr;
+
+    if (HeadofList->id == id)
+    {
+
+       ptr = HeadofList;
+        printf("\n Node deleted:");
+        printNode(HeadofList);
+        HeadofList = HeadofList->next;
+        free(ptr);
+        return(HeadofList);
+    }
+    for (ptr = HeadofList->next, bptr = HeadofList; ptr != NULL; ptr = ptr->next,
+                                                               bptr = bptr->next)
+    {
+        if (ptr->id == id)
+        {
+            printf("\n Node deleted:");
+            printNode(ptr);
+            bptr->next = ptr->next;
+            free(ptr);
+            return(HeadofList);
+        }
+    }
+
+    printf("\n Employee Number %d not found ", id);
+    return(HeadofList);
+}
+
+void search(struct employee *HeadofList, int key)
+{
+
+    printf("\n\n Enter the employee number to be searched:\n ");
+    scanf("%d", &key);
+
+    struct employee *ptr;
+
+    for (ptr = HeadofList; ptr != NULL; ptr = ptr -> next)
+    {
+        if (ptr->id == key)
+        {
+    
+  printf("\n Key found:");
+            printNode(ptr);
+            return;
+        }
+    }
+    printf("\n Employee Number %d not found ", key);
+}
+
+void display(struct employee  *HeadofList)
+
+{
+
+    if (HeadofList == NULL)
+         printf("\n List empty.");
+
+    struct employee  *ptr;
+
+    for (ptr = HeadofList; ptr != NULL; ptr = ptr->next)
+        printNode(ptr);
+}
+
+
+int  option()
+{
+    int choice;
+
+
+    printf("\n");
+    printf("    Press 1 to INSERT a node into the list     \n");
+    printf("    Press 2 to DELETE a node from the list     \n");
+    printf("    Press 3 to DISPLAY the list    \n");
+    printf("    Press 4 to SEARCH the list \n");
+                                                                                                                            133,4         64%   printf("\n Enter your choice: ");
+    scanf("%d", &choice);
+    printf("\n");
+
+
+
+    return choice;
+}
+
+void main()
+{
+    struct employee *employeeList;
+    struct employee emp;
+    char name[21], designation[51], expertise[50], joiningdate[50];
+    int choice;
+    int id;
+    employeeList = NULL;
+    printf("\n Welcome to ebytelogic!\n");
+    printf("\n");
+
+    do
+    {
+        choice = option();
+        switch(choice)
+        {
+
+         case 1:
+
+            employeeList = insert(employeeList, id, name, designation, expertise, joiningdate);
+            break;
+         case 2:
+
+            employeeList = deleteNode(employeeList, id);
+            break;
+        case 3:
+           display(employeeList);
+            break;
+        case 4:
+
+            search(employeeList, id);
+            break;
+        case 5:
+
+            exit;
+            break;
+        default :
+
+            printf("\n Invalid choice.");
+
+        }
+
+    } while (choice != 5);
+}
+                          
+          
