@@ -2,187 +2,185 @@
 #include <curses.h>
 #include <stdlib.h>
 #include <string.h>
-#define MAX 60
-
 struct employee
 {
-    int  id;
-    char name[51];
-    char designation[51];
-    char expertise[51];
-    char joiningdate[51];
-    struct employee *next;
+	int  id;
+	char name[51];
+	char designation[51];
+	char expertise[51];
+	char joiningdate[51];    
+	struct employee *next;
 
 };
 
-struct employee *insert(struct employee *HeadofList , int id, char name[],
-                        char designation[], char expertise[], char joiningdate[])
+void addEmployee(struct employee **HeadofList)
 {
-            printf("\n--> Enter the employee number :");
-            scanf("%d", &id);
-            printf("\n--> Enter the Employee name :");
-            scanf("%s",name);
-            printf("\n--> Enter the Employee Designation :");
-            scanf("%s",designation);
-            printf("\n--> Enter the Employee expertise :");
-            scanf("%s",expertise);
-            printf("\n--> Enter the employee joining date  :");
-            scanf("%s",joiningdate);
 
-            struct employee *newnode;
-            newnode = (struct employee*)malloc(sizeof(struct employee));
-
-
-            if (newnode == NULL)
-                printf("\n Allocation not possible \n");
-               newnode->id = id;
-    strcpy(newnode->name, name);
-    strcpy(newnode->designation, designation);
-    strcpy(newnode->expertise,expertise);
-    strcpy(newnode->joiningdate, joiningdate);
-    newnode->next = HeadofList;
-    HeadofList = newnode;
-    return(HeadofList);
+	struct employee *ptr;
+	ptr=*HeadofList;
+     
+	if(ptr == NULL)
+	{	ptr = (struct employee*) malloc(sizeof(struct employee));
+		printf("\nEnter the employee number: ");
+		scanf("%d",&(ptr->id));
+		printf("\nEntr the employee name :");
+		scanf("%s", ptr->name);
+		printf("\nEnter the employee designation :");
+		scanf("%s", ptr->designation);
+		printf("\nEnter the employee expertise :");
+		scanf("%s", ptr->expertise);
+		printf("\nEnter the employee joiningdate :");
+		scanf("%s",ptr->joiningdate);
+		ptr->next=NULL;
+		*HeadofList = ptr;
+	}
+	else 
+	{
+		while(ptr->next!=NULL)
+		{
+		ptr=ptr->next;
+		}
+	    ptr->next= (struct employee*) malloc(sizeof(struct employee));
+		ptr=ptr->next;
+		printf("\nEnter the employee number :");
+		scanf("%d",&ptr->id);
+		printf("\nEnter the employee name 3:");
+		scanf("%s", ptr->name);
+		printf("\nEnter the employee designation :");
+		scanf("%s", ptr->designation);
+		printf("\nEnter the employee expertise :");
+		scanf("%s",  ptr->expertise);
+		printf("\nEnter the employee joinigdate :");
+		scanf("%s",ptr->joiningdate);
+		ptr->next=NULL;
+	}
 }
 
 void printNode(struct employee  *p)
-{
-    printf("\n.........Employee Details......  \n");
-    printf("\n Emp No -->       : %d\n", p->id);
-    printf("\n Name -->           : %s\n", p->name);
-    printf("\n Designation -->    : %s\n", p->designation);
-    printf("\n Expertise -->    : %s\n", p->expertise);
-    printf("\n joiningdate -->     : %s\n", p->joiningdate);
-    printf("\n..............................\n");
-}
-
-struct employee*  deleteNode(struct employee  *HeadofList, int id)
-{
-
-    printf("\n\n Enter the employee number to be deleted: ");
-    scanf("%d", &id);
-
-    struct employee *ptr;
-    struct employee *bptr;
-
-    if (HeadofList->id == id)
-    {
-    
-       ptr = HeadofList;
-        printf("\n Node deleted:");
-        printNode(HeadofList);
-        HeadofList = HeadofList->next;
-        free(ptr);
-        return(HeadofList);
-    }
-    for (ptr = HeadofList->next, bptr = HeadofList; ptr != NULL; ptr = ptr->next,
-                                                               bptr = bptr->next)
-    {
-        if (ptr->id == id)
-        {
-            printf("\n Node deleted:");
-            printNode(ptr);
-            bptr->next = ptr->next;
-            free(ptr);
-            return(HeadofList);
-        }
-    }
-
-    printf("\n Employee Number %d not found ", id);
-    return(HeadofList);
-}
-
-void search(struct employee *HeadofList, int key)
-{
-
-    printf("\n\n Enter the employee number to be searched:\n ");
-    scanf("%d", &key);
-
-    struct employee *ptr;
-
-    for (ptr = HeadofList; ptr != NULL; ptr = ptr -> next)
-    {
-        if (ptr->id == key)
-        {
-    
-  printf("\n Key found:");
-            printNode(ptr);
-            return;
-        }
-    }
-    printf("\n Employee Number %d not found ", key);
-}
-void display(struct employee  *HeadofList)
 
 {
+	printf( "\n.........Employee Details.....\n");
+	printf( " Emp No --> %d   :    \n", p->id);
+	printf( " Name -->     %s      :\n",  p->name);
+	printf( " Designation --> %s :\n " , p->designation);
+	printf( " Expertise -->   %s :\n  ", p->expertise);
+	printf( " joiningdate -->  %s :\n ", p->joiningdate);
+	printf( "..............................\n"); 
+}
+void   removeEmployee(struct employee  **HeadofList)
+{
+	int id;
+	struct employee *ptr;
+	struct employee *Head;
+	struct employee *bptr;
+	Head=*HeadofList;
 
-    if (HeadofList == NULL)
-         printf("\n List empty.");
+	if(Head==NULL)
+	{
+		printf("List is empty\n");
+		return;
+	}
+	printf(" Enter the employee number to be deleted: ");
+	scanf("%d", &id);
 
-    struct employee  *ptr;
+	if (Head->id == id)
+	{
+		ptr = Head;
+		printf( " Node deleted:");
+		printNode(Head);
+		Head = Head ->next;
+		free(ptr);
+	}
+	for (ptr = Head->next, bptr = Head; ptr != NULL; ptr = ptr->next,
+			bptr = bptr->next)
+	{
+		if (ptr->id == id)
+		{
+			printf(" Node deleted:");
+			printNode(ptr);
+			bptr->next = ptr->next;
+			free(ptr);
+		}
+	}
+	printf(" Employee Number %d not found ",id);
+}
+void findEmployee(struct employee **HeadofList)
+{
+	int key;
+	struct employee *ptr;
+	struct employee *find;
+	find = *HeadofList;
+	ptr= find;
 
-    for (ptr = HeadofList; ptr != NULL; ptr = ptr->next)
-        printNode(ptr);
+	printf( " Enter the employee number to be found: ");
+	scanf("%d", &key);
+	for (ptr = find; ptr != NULL; ptr = ptr -> next)
+	{
+		if (ptr->id == key)
+		{
+			printf("Key found:");
+			printNode(ptr);
+			return;
+		}
+	}
+	printf("Employee Number %d  not found ",key);
 }
 
+void displayList(struct employee  *HeadofList)
+{
+	struct employee *display;
+	display=HeadofList;
+
+	if (display == NULL)
+		printf("List	Empty");
+        printf("%p", display);
+	while(display->next!=NULL)
+
+	{
+		printNode(display);
+		display=display->next;
+	}
+	printNode(display);
+
+}
 int  option()
 {
-    int choice;
-    printf("\n");
-    printf("    Press 1 to INSERT a node into the list     \n");
-    printf("    Press 2 to DELETE a node from the list     \n");
-    printf("    Press 3 to DISPLAY the list    \n");
-    printf("    Press 4 to SEARCH the list \n");
-                                                                                                                            133,4         64%   printf("\n Enter your choice: ");
-    scanf("%d", &choice);
-    printf("\n");
-    
-    return choice;
+	int choice;  
+	printf("\n Press 1 to INSERT a node into the list\n");
+	printf(" Press 2 to DELETE a node from the list\n");
+	printf(" press 3 to DISPLAY the list\n");
+	printf(" Press 4 to SEARCH the list\n");
+	printf(" Press 5 to EXIT...\n");
+	printf(" \nEnter your choice: ");
+	scanf("%d", &choice);
+	return choice;
 }
-
 void main()
 {
-    struct employee *employeeList;
-    struct employee emp;
-    char name[21], designation[51], expertise[50], joiningdate[50];
-    int choice;
-    int id;
-    employeeList = NULL;
-    printf("\n Welcome to ebytelogic!\n");
-    printf("\n");
-
-    do
-    {
-        choice = option();
-        switch(choice)
-        {
-
-         case 1:
-
-            employeeList = insert(employeeList, id, name, designation, expertise, joiningdate);
-            break;
-         case 2:
-
-            employeeList = deleteNode(employeeList, id);
-            break;
-        case 3:
-        
-           display(employeeList);
-            break;
-        case 4:
-
-            search(employeeList, id);
-            break;
-        case 5:
-
-            exit;
-            break;
-        default :
-
-            printf("\n Invalid choice.");
-        }
-
-    } while (choice != 5);
+	struct employee *employeeList = NULL;
+	int choice;
+	printf(" Welcome to ebytelogic!\n");
+	do
+	{
+		choice = option();
+		switch(choice)
+		{
+			case 1:
+				addEmployee(&employeeList);
+				break;
+			case 2:
+				removeEmployee(&employeeList);
+				break;
+			case 3:
+				displayList(employeeList);
+				break;	    
+			case 4:
+				findEmployee(&employeeList);
+				break;
+			case 5:
+				return;
+			default :
+				printf("Invalid choice.");
+		}
+	}  while (1);
 }
-                          
-          
